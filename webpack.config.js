@@ -12,7 +12,7 @@ module.exports = {
 			directory: path.join(__dirname, 'public'),
 		},
 		open: true,
-		compress: true,
+		compress: false,
 		hot: true,
 		port: 8080,
 	},
@@ -57,19 +57,19 @@ module.exports = {
 	},
 
 	optimization: {
-		minimize: true,
-		minimizer: [
-			new TerserPlugin({
-				terserOptions: {
-					compress: {
-						drop_console: false,
-					},
-					output: {
-						comments: false,
-					},
-				},
-				extractComments: false,
-			})
-		]
+		// minimize: false,
+		// minimizer: [
+		// 	new TerserPlugin({
+		// 		terserOptions: {
+		// 			compress: {
+		// 				drop_console: false,
+		// 			},
+		// 			output: {
+		// 				comments: false,
+		// 			},
+		// 		},
+		// 		extractComments: false,
+		// 	})
+		// ]
 	},
 };

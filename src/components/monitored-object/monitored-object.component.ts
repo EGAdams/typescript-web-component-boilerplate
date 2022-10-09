@@ -1,4 +1,4 @@
-import html from './hello-world.html';
+import html from './monitored-object.html';
 import style from './styles/main.css';
 import { Component } from "@/utils";
 
@@ -7,16 +7,20 @@ import { Component } from "@/utils";
     style: style,
 	  properties: [ 'prop' ]
 })
-export class HelloWorld implements IWebComponent {
+export class MonitoredObject implements IWebComponent {
+    datasource_type = "url";
+    get prop() {
+        console.log('prop read');
+        return '';
+      }
+    
+      set prop(value: string) {
+        console.log('prop written, new value', value);
+      }
 
-  get prop() {
-    console.log('prop read');
-    return '';
-  }
-
-  set prop(value: string) {
-    console.log('prop written, new value', value);
-  }
+	static observedAttributes() {
+    // return an array containing the names of the attributes you want to observe
+	}
 
   constructor(private $el: HTMLElement, private $host: Element) {}
 
@@ -25,29 +29,21 @@ export class HelloWorld implements IWebComponent {
    * This will happen each time the node is moved, and may happen before the element's contents have been fully parsed.
    */
   connectedCallback() {
-    console.log('hello-world2 connected ');
-
-    let textContainer = this.$el.querySelector('.show-clicked-btn');
-
-    this.$el.querySelector('.btn-to-click')?.addEventListener('click', () => {
-      if (textContainer) {
-        textContainer.innerHTML = "clicked!!";
-      }
-    })
+    console.log('monitored-object connected');
   }
 
   /**
    * Invoked each time the custom element is disconnected from the document's DOM.
    */
   disconnectedCallback() {
-    console.log('hello-world disconnected');
+    console.log('monitored-object disconnected');
   }
 
   /**
    * Invoked each time the custom element is moved to a new document.
    */
   adoptedCallback() {
-    console.log('hello-world moved');
+    console.log('monitored-object moved');
   }
 
   /**
@@ -59,7 +55,8 @@ export class HelloWorld implements IWebComponent {
    * @param newValue
    */
   attributeChangedCallback(name: string, oldValue: any, newValue: any) {
-    console.log(`${name} changed, oldValue: ${oldValue}, newValue: ${newValue}`);
+     const nameProp = name.replace(/-[a-zA-Z]/g, (found: string) => found.slice(1).toUpperCase());
+     (this as any)[nameProp] = newValue;
   }
 
 }

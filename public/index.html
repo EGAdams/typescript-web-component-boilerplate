@@ -7,7 +7,17 @@
 	<title>TypeScript Web Component</title>
 </head>
 <body>
+    <script type="importmap">
+        {
+            "imports": {
+                "vue":               "https://unpkg.com/vue@3/dist/vue.esm-browser.js",                                     // Vue.js
+                "monitor-led":       "https://unpkg.com/@egadams/monitor-led@latest/dist/monitor-led.esm.js",               // monitor-led
+                "accordion-section": "https://unpkg.com/@egadams/accordion-section@0.0.10/dist/accordion-section.esm.js",   // accordion-section
+                "log-object-processor": "https://unpkg.com/log-object-processor@latest/build/module/index.js"              // log-object-processor
+            } }
+        </script>
 <hello-world id="hello"></hello-world>
+<monitored-object id="monitored-object"></monitored-object>
 <script src="./dist/bundle.js"></script>
 <script>
 	let hello = document.getElementById('hello');
@@ -18,6 +28,11 @@
 			hello.prop = 'test1';
 		}, 1000)
 	});
+</script>
+<script type="module">
+    import { createApp, reactive } from 'vue';
+    import { ServerLedData }       from 'monitor-led';
+    import { LogObjectProcessor }   from 'log-object-processor';
 </script>
 </body>
 </html>
