@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Day Planner</title>
+    <style>
+        /* CSS for the table and grid */
+        .grid {
+            /* add this line */
+            grid-template-rows: repeat(4, 1fr);
+            /* existing styles */
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 20px;
+            width: 100%;
+        }
+
+        /* CSS for the sliders */
+        .slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 15px;
+            border-radius: 5px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+            will-change: opacity;
+            /* other styles */
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #4CAF50;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #4CAF50;
+            cursor: pointer;
+        }
+
+        /* CSS for the reset button */
+        .reset-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            -webkit-box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75);
+            -moz-box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75);
+            box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75);
+            filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=0, OffY=5, Color='gray', Positive='true');
+            /* Add metallic shine effect */
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 20%, rgba(255, 255, 255, 0) 80%, rgba(255, 255, 255, 0.3) 100%);
+        }
+
+        /* CSS for the labels */
+        .slider-label {
+            font-size: 12px;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Day Planner</h1>
+    <div class="grid">
+        <div class="time-column">
+            <h2>Time</h2>
+            <input type="range" min="1" max="100" value="25" class="slider" id="time-slider">
+            <label class="slider-label" for="time-slider">25%</label>
+        </div>
+        <div class="task-column">
+            <h2>Task</h2>
+            <input type="range" min="1" max="100" value="25" class="slider" id="task-slider">
+            <label class="slider-label" for="task-slider">25%</label>
+        </div>
+        <div class="priority-column">
+            <h2>Priority</h2>
+            <input type="range" min="1" max="100" value="25" class="slider" id="priority-slider">
+            <label class="slider-label" for="priority-slider">25%</label>
+        </div>
+        <table style="display: contents;">
+            <tr>
+                <th>Time</th>
+                <th>Task</th>
+                <th>Priority</th>
+            </tr>
+            <tr>
+                <td>8:00am</td>
+                <td>Wake up and have breakfast</td>
+                <td>-</td>
+            </tr>
+            <!-- other rows -->
+            <tr>
+                <td>8:00am</td>
+                <td>Wake up and have breakfast</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>9:00am</td>
+                <td>Review emails and prioritise tasks for the day</td>
+                <td>High</td>
+            </tr>
+            <tr>
+                <td>10:00am</td>
+                <td>Work on project 1</td>
+                <td>High</td>
+            </tr>
+            <tr>
+                <td>12:00pm</td>
+                <td>Take a lunch break</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>1:00pm</td>
+                <td>Work on project 2</td>
+                <td>Medium</td>
+            </tr>
+            <tr>
+                <td>3:00pm</td>
+                <td>Attend team meeting</td>
+                <td>High</td>
+            </tr>
+            <tr>
+                <td>4:00pm</td>
+                <td>Follow up on action items from meeting</td>
+                <td>High</td>
+            </tr>
+            <tr>
+                <td>6:00pm</td>
+                <td>Exercise or personal activity</td>
+                <td>Medium</td>
+            </tr>
+            <tr>
+                <td>7:00pm</td>
+                <td>Prepare dinner</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>8:00pm</td>
+                <td>Review progress and plan for next day</td>
+                <td>High</td>
+            </tr>
+            <tr>
+                <td>9:00pm</td>
+                <td>Reflect on the day</td>
+                <td>Medium</td>
+            </tr>
+            <tr>
+                <td>10:00pm</td>
+                <td>Get ready for bed</td>
+                <td>-</td>
+            </tr>
+        </table>
+    </div>
+    <button class="reset-button" onclick="resetSliders()">Reset</button>
+    <script>
+        // Get the sliders
+        var timeSlider = document.getElementById("time-slider");
+        var taskSlider = document.getElementById("task-slider");
+        var prioritySlider = document.getElementById("priority-slider");
+
+        // Get the grid columns
+        var timeColumn = document.querySelector(".time-column");
+        var taskColumn = document.querySelector(".task-column");
+        var priorityColumn = document.querySelector(".priority-column");
+
+        // Update the grid column widths when the sliders are moved
+        timeSlider.oninput = function () {
+            timeColumn.style.gridColumn = "span " + this.value;
+            document.querySelector(".slider-label[for='time-slider']").innerHTML = this.value + "%";
+        }
+        taskSlider.oninput = function () {
+            taskColumn.style.gridColumn = "span " + this.value;
+            document.querySelector(".slider-label[for='task-slider']").innerHTML = this.value + "%";
+        }
+        prioritySlider.oninput = function () {
+            priorityColumn.style.gridColumn = "span " + this.value;
+            document.querySelector(".slider-label[for='priority-slider']").innerHTML = this.value + "%";
+        }
+
+        // Reset the sliders to their default values
+        function resetSliders() {
+            timeSlider.value = 25;
+            taskSlider.value = 25;
+            prioritySlider.value = 25;
+            timeColumn.style.gridColumn = "span 25";
+            taskColumn.style.gridColumn = "span 25";
+            priorityColumn.style.gridColumn = "span 25";
+            document.querySelector(".slider-label[for='time-slider']").innerHTML = "25%";
+            document.querySelector(".slider-label[for='task-slider']").innerHTML = "25%";
+            document.querySelector(".slider-label[for='priority-slider']").innerHTML = "25%";
+        }
+    </script>
+</body>
+
+</html>
